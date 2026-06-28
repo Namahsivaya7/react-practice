@@ -1,22 +1,22 @@
 import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
-import { signup } from '../api/authApi'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { signin } from '../api/authApi'
 import { useAuth } from '../store/authStore'
 import './SignupForm.css'
 
 const initialForm = {
-  name: '',
   email: '',
   password: '',
-  confirmPassword: '',
 }
 
-function SignupForm() {
+function SignInForm() {
   const [form, setForm] = useState(initialForm)
   const [status, setStatus] = useState({ type: '', message: '' })
   const [loading, setLoading] = useState(false)
   const { login } = useAuth()
   const navigate = useNavigate()
+  const location = useLocation()
+  const redirectTo = location.state?.from || '/dashboard'
 
   const handleChange = (event) => {
     const { name, value } = event.target
@@ -26,25 +26,18 @@ function SignupForm() {
 
   const handleSubmit = async (event) => {
     event.preventDefault()
-
-    if (form.password !== form.confirmPassword) {
-      setStatus({ type: 'error', message: 'Passwords do not match' })
-      return
-    }
-
     setLoading(true)
     setStatus({ type: '', message: '' })
 
     try {
-      const data = await signup({
-        name: form.name,
+      const data = await signin({
         email: form.email,
         password: form.password,
       })
 
       login(data.token, data.user)
-      navigate('/dashboard', { replace: true })
-    } catch (error){
+      navigate(redirectTo, { replace: true })
+    } catch (error) {
       const message =
         error.response?.data?.message || 'Something went wrong. Please try again.'
       setStatus({ type: 'error', message })
@@ -55,22 +48,10 @@ function SignupForm() {
 
   return (
     <div className="signup-card">
-      <h2>Create an account</h2>
-      <p className="signup-subtitle">Sign up to get started</p>
+      <h2>Welcome back</h2>
+      <p className="signup-subtitle">Sign in to your account</p>
 
       <form className="signup-form" onSubmit={handleSubmit}>
-        <label htmlFor="name">Name</label>
-        <input
-          id="name"
-          name="name"
-          type="text"
-          value={form.name}
-          onChange={handleChange}
-          placeholder="Jane Doe"
-          required
-          minLength={2}
-        />
-
         <label htmlFor="email">Email</label>
         <input
           id="email"
@@ -89,19 +70,7 @@ function SignupForm() {
           type="password"
           value={form.password}
           onChange={handleChange}
-          placeholder="At least 6 characters"
-          required
-          minLength={6}
-        />
-
-        <label htmlFor="confirmPassword">Confirm password</label>
-        <input
-          id="confirmPassword"
-          name="confirmPassword"
-          type="password"
-          value={form.confirmPassword}
-          onChange={handleChange}
-          placeholder="Re-enter your password"
+          placeholder="Your password"
           required
           minLength={6}
         />
@@ -111,15 +80,15 @@ function SignupForm() {
         )}
 
         <button type="submit" disabled={loading}>
-          {loading ? 'Creating account...' : 'Sign up'}
+          {loading ? 'Signing in...' : 'Sign in'}
         </button>
       </form>
 
       <p className="auth-switch">
-        Already have an account? <Link to="/signin">Sign in</Link>
+        Don&apos;t have an account? <Link to="/signup">Sign up</Link>
       </p>
     </div>
   )
 }
 
-export default SignupForm
+export default SignInForm
