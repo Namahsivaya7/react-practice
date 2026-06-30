@@ -28,7 +28,7 @@ export const clearStoredToken = () => {
 }
 
 export const signup = async (payload) => {
-  const { data } = await api.post('/auth/signup', payload)
+  const { data } = await api.post('/api/auth/signup', payload)
   return data
 }
 
