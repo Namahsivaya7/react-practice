@@ -3,7 +3,7 @@ import axios from 'axios'
 const TOKEN_KEY = 'auth_token'
 
 const api = axios.create({
-  baseURL: '/api',
+  baseURL: import.meta.env.VITE_API_URL ?? 'https://react-practice-1jkx.onrender.com/api',
   headers: {
     'Content-Type': 'application/json',
   },
