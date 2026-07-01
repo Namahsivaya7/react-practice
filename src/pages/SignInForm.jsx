@@ -16,7 +16,7 @@ function SignInForm() {
   const { login } = useAuth()
   const navigate = useNavigate()
   const location = useLocation()
-  const redirectTo = location.state?.from || '/dashboard'
+  const redirectTo = location.state?.from || '/users'
 
   const handleChange = (event) => {
     const { name, value } = event.target

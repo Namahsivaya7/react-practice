@@ -4,6 +4,8 @@ import ProtectedRoute from './components/ProtectedRoute'
 import Dashboard from './pages/Dashboard'
 import SignInForm from './pages/SignInForm'
 import SignupForm from './pages/SignupForm'
+import TableView from './pages/TableView'
+import UserDetail from './pages/UserDetail'
 import { useAuth, useAuthStore } from './store/authStore'
 import './App.css'
 
@@ -30,15 +32,15 @@ function App() {
       <Routes>
         <Route
           path="/"
-          element={<Navigate to={isAuthenticated ? '/dashboard' : '/signin'} replace />}
+          element={<Navigate to={isAuthenticated ? '/users' : '/signin'} replace />}
         />
         <Route
           path="/signin"
-          element={isAuthenticated ? <Navigate to="/dashboard" replace /> : <SignInForm />}
+          element={isAuthenticated ? <Navigate to="/users" replace /> : <SignInForm />}
         />
         <Route
           path="/signup"
-          element={isAuthenticated ? <Navigate to="/dashboard" replace /> : <SignupForm />}
+          element={isAuthenticated ? <Navigate to="/users" replace /> : <SignupForm />}
         />
         <Route
           path="/dashboard"
@@ -48,6 +50,23 @@ function App() {
             </ProtectedRoute>
           }
         />
+        <Route
+          path="/users"
+          element={
+            <ProtectedRoute>
+              <TableView />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/users/:id"
+          element={
+            <ProtectedRoute>
+              <UserDetail />
+            </ProtectedRoute>
+          }
+        />
+        <Route path="/tableview" element={<Navigate to="/users" replace />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </section>

@@ -43,7 +43,7 @@ function SignupForm() {
       })
 
       login(data.token, data.user)
-      navigate('/dashboard', { replace: true })
+      navigate('/users', { replace: true })
     } catch (error){
       const message =
         error.response?.data?.message || 'Something went wrong. Please try again.'

@@ -2,15 +2,9 @@ import { Router } from 'express'
 import User from '../models/User.js'
 import { authMiddleware } from '../middleware/authMiddleware.js'
 import { generateToken } from '../utils/generateToken.js'
+import { toPublicUser } from '../utils/toPublicUser.js'
 
 const router = Router()
-
-const toPublicUser = (user) => ({
-  id: user._id,
-  name: user.name,
-  email: user.email,
-  createdAt: user.createdAt,
-})
 
 router.post('/signup', async (req, res) => {
   try {

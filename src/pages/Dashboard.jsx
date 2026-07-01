@@ -1,6 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../store/authStore'
 import './Dashboard.css'
+import './Users.css'
 
 function formatDate(value) {
   return new Date(value).toLocaleDateString(undefined, {
@@ -30,9 +31,14 @@ function Dashboard() {
           <h2>Dashboard</h2>
           <p className="dashboard-subtitle">Your account overview</p>
         </div>
-        <button type="button" className="dashboard-logout" onClick={handleLogout}>
-          Log out
-        </button>
+        <div className="users-nav">
+          <Link to="/users" className="users-link">
+            All users
+          </Link>
+          <button type="button" className="dashboard-logout" onClick={handleLogout}>
+            Log out
+          </button>
+        </div>
       </div>
 
       <div className="dashboard-profile">

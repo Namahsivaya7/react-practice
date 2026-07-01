@@ -17,6 +17,8 @@ api.interceptors.request.use((config) => {
   return config
 })
 
+export { api }
+
 export const getStoredToken = () => localStorage.getItem(TOKEN_KEY)
 
 export const setStoredToken = (token) => {
@@ -28,7 +30,7 @@ export const clearStoredToken = () => {
 }
 
 export const signup = async (payload) => {
-  const { data } = await api.post('/api/auth/signup', payload)
+  const { data } = await api.post('/auth/signup', payload)
   return data
 }
 
