@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useState } from 'react'
 import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom'
+import { useSelector, useDispatch } from 'react-redux'
 import { deleteUser, getUser, updateUser } from '../api/userApi'
-import { useAuth, useAuthStore } from '../store/authStore'
+import { login } from '../store/authSlice'
 import './Users.css'
 
 function formatDate(value) {
@@ -24,8 +25,8 @@ function UserDetail() {
   const [saving, setSaving] = useState(false)
   const [deleting, setDeleting] = useState(false)
   const [status, setStatus] = useState({ type: '', message: '' })
-  const { user: currentUser } = useAuth()
-  const login = useAuthStore((state) => state.login)
+  const dispatch = useDispatch()
+  const currentUser = useSelector((state) => state.auth.user)
   const navigate = useNavigate()
 
   const loadUser = useCallback(async () => {
@@ -74,6 +75,7 @@ function UserDetail() {
 
     try {
       const data = await updateUser(id, form)
+      console.log("User data:",data)
       setUser(data.user)
       setForm({ name: data.user.name, email: data.user.email })
       setSearchParams({})
@@ -82,7 +84,7 @@ function UserDetail() {
       if (currentUser?.id === data.user.id) {
         const token = localStorage.getItem('auth_token')
         if (token) {
-          login(token, data.user)
+          dispatch(login({ token, user: data.user }))
         }
       }
     } catch (error) {

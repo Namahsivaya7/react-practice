@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { useSelector, useDispatch } from 'react-redux'
 import { deleteUser, getUsers } from '../api/userApi'
-import { useAuth } from '../store/authStore'
+import { logout } from '../store/authSlice'
 import Table from '../components/Table'
 import './Users.css'
 
@@ -10,7 +11,8 @@ function TableView() {
   const [loading, setLoading] = useState(true)
   const [status, setStatus] = useState({ type: '', message: '' })
   const [deletingId, setDeletingId] = useState(null)
-  const { user, logout } = useAuth()
+  const dispatch = useDispatch()
+  const user = useSelector((state) => state.auth.user)
   const navigate = useNavigate()
   const location = useLocation()
 
@@ -42,7 +44,7 @@ function TableView() {
   }, [location.pathname, location.state, navigate])
 
   const handleLogout = () => {
-    logout()
+    dispatch(logout())
     navigate('/signin', { replace: true })
   }
 

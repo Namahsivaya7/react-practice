@@ -1,7 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom'
-import { useAuth } from '../store/authStore'
-import './Dashboard.css'
-import './Users.css'
+import { useSelector, useDispatch } from 'react-redux'
+import { logout } from '../store/authSlice'
+import './styles/Dashboard.css'
 
 function formatDate(value) {
   return new Date(value).toLocaleDateString(undefined, {
@@ -12,11 +12,12 @@ function formatDate(value) {
 }
 
 function Dashboard() {
-  const { user, logout } = useAuth()
+  const dispatch = useDispatch()
+  const user = useSelector((state) => state.auth.user)
   const navigate = useNavigate()
 
   const handleLogout = () => {
-    logout()
+    dispatch(logout())
     navigate('/signin', { replace: true })
   }
 

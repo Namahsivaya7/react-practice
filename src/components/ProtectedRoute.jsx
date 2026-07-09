@@ -1,8 +1,9 @@
 import { Navigate, useLocation } from 'react-router-dom'
-import { useAuth } from '../store/authStore'
+import { useSelector } from 'react-redux'
 
 function ProtectedRoute({ children }) {
-  const { isAuthenticated, loading } = useAuth()
+  const { user, loading } = useSelector((state) => state.auth)
+  const isAuthenticated = Boolean(user)
   const location = useLocation()
 
   if (loading) {

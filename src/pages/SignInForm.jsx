@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
 import { signin } from '../api/authApi'
-import { useAuth } from '../store/authStore'
+import { login } from '../store/authSlice'
 import './SignupForm.css'
 
 const initialForm = {
@@ -13,7 +14,7 @@ function SignInForm() {
   const [form, setForm] = useState(initialForm)
   const [status, setStatus] = useState({ type: '', message: '' })
   const [loading, setLoading] = useState(false)
-  const { login } = useAuth()
+  const dispatch = useDispatch()
   const navigate = useNavigate()
   const location = useLocation()
   const redirectTo = location.state?.from || '/users'
@@ -35,7 +36,7 @@ function SignInForm() {
         password: form.password,
       })
 
-      login(data.token, data.user)
+      dispatch(login({ token: data.token, user: data.user }))
       navigate(redirectTo, { replace: true })
     } catch (error) {
       const message =
